@@ -1,1 +1,3 @@
 2/16/2022 9pm-2am, 5 hours: Studied and worked on Machine Learning to predict stocks 
+2/17/2022 9pm-1am, 4 hours: Studied ML and created calender
+2/18/2022 3pm-6pm, 3 hours: Researched RL
