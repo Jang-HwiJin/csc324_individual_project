@@ -1,3 +1,20 @@
+1/24/2022 3pm-6pm, 9pm-10pm, 4 Hours: Learned R and Shiny
+1/25/2022 8am-12pm, 4 Hours: Learned R and Shiny
+1/26/2022 3pm-6pm, 9pm-10pm, 4 Hours: Experiment with shiny
+1/27/2022 8am-12pm, 4 Hours: Look for datasets and try shiny
+1/28/2022 3pm-6pm, 9pm-10pm, 4 Hours: Looking for Datasets and trying examples
+1/31/2022 3pm-6pm, 9pm-11pm, 5 Hours: Found Stock Dataset and working on shiny
+2/01/2022 8am-12pm, 4 Hours: Work with dataset and work on journal
+2/02/2022 3pm-6pm, 3 Hours: Reading, Journal, and Inidividual project working on parsing and tidying
+2/03/2022 9am-12pm, 8pm-10pm, 5 Hours: Catching up in Reading and performing analysis on stocks
+2/04/2022 6pm-10pm, 4 Hours: Begin switching up dataset and project idea 
+2/07/2022 4pm-7pm, 9pm-10pm, 5 Hours: Reading, Journal, and ethic presentations
+2/08/2022 10am-12pm, 7pm-9pm, 4 Hours: Reading on Shiny and R and presentations
+2/09/2022 3:30pm-5:30pm, 9pm-11pm, 4 Hours: Reading and experimenting with FAANG data set
+2/10/2022 9am-12pm, 3 Hours: Explore ideas and investigate questions for my new dataset
+2/11/2022 3pm-7pm, 4 Hours: Begin creating example Machine Learning algorithms and see examples
+2/14/2022 1pm-2pm, 3-6pm, 4 Hours: Begin tidying the FAANG stock dataset and journal and readings for class
+2/15/2022 8:30am-12pm, 8-8:30pm, 4 Hours: Research for Machine learning in R and stock forecasts
 2/16/2022 9pm-2am, 5 hours: Studied and worked on Machine Learning to predict stocks 
 2/17/2022 9pm-1am, 4 hours: Studied ML and created calender
 2/18/2022 3pm-6pm, 3 hours: Researched RL
