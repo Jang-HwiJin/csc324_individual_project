@@ -47,33 +47,7 @@ FAANG$Date <- as.Date(FAANG$Date,format ='%m/%d/%Y' )
 #Rearranging the dataframe so that Company comes first
 FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 ###############################################################################################
-#Calculating the avergae highs of inidividual and FAANG
 
-amazon_avg = mean(amazon$High)
-amazon_avg
-apple_avg = mean(apple$High)
-apple_avg
-facebook_avg = mean(facebook$High)
-facebook_avg
-google_avg = mean(google$High)
-google_avg
-netflix_avg = mean(netflix$High)
-netflix_avg
-
-faang_avg <- c(amazon_avg, apple_avg, facebook_avg, google_avg, netflix_avg)
-labels <- c("Amazon", "Apple", "Facebook", "Google", "Netflix")
-piepercent<- round(faang_avg*100/sum(faang_avg), 1)
-piepercent <- percent(piepercent/100, accuracy = .1)
-
-#Pie chart with no percents
-pie(faang_avg, labels, main = "Average Highs of FAANG pie chart", col = rainbow(length(faang_avg)))
-
-#Pie chart with percents
-pie(faang_avg, labels = piepercent, main="Average Highs of FAANG pie chart", col = rainbow(length(faang_avg))) 
-legend("topright", labels, fill = rainbow(length(faang_avg)))
-
-#3D pie chart 
-pie3D(faang_avg,labels = labels, explode = 0.1, main = "Average Highs of FAANG pie chart")
 ###############################################################################################
 
 #shifting n rows up of a given variable
@@ -96,20 +70,40 @@ h2o.describe(amazon)
 y <- "shifted" #variable we want to forecast
 x <- setdiff(names(amazon), y)
 
+set.seed(1)
 parts <- h2o.splitFrame(amazon, .80)
 train <- parts[[1]]
 test <- parts[[2]]
 
 #Train the Model
-automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 120)
+automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 300, seed=1)
 
 #Obtained a list of models in order of performance. To learn more about them just call
 automodel@leader
 
 #Apply the Mode
 predictions <- h2o.predict(automodel@leader, test)
+predictions
 
+################################################################################################
 
+#MSE(Mean Squared Error)
+#The MSE metric measures the average of the squares of the errors or deviations. MSE takes the distances from the points to the regression line (these distances are the "errors") and squaring them to remove any negative signs. 
+#MSE also gives more weight to larger differences. The bigger the error, the more it is penalized. 
+#The smaller the MSE, the better the model's performance.
 
+#RMSE(Root Mean Squared Error)
+#The RMSE metric evaluates how well a model can predict a continuous value. 
+#The smaller the RMSE, the better the model's performance. 
+#RMSE penalizes large gaps more harshly than MAE
 
+#MAE(Mean Absolute Error)
+#The mean absolute error is an average of the absolute errors. 
+#The smaller the MAE the better the model's performance. (Tip: MAE is robust to outliers. 
+#If you want a metric that is sensitive to outliers, try root mean squared error (RMSE).)
+
+#RMSLE(Root Mean Squared Logarithmic Error)
+#This metric measures the ratio between actual values and predicted values and takes the log of the predictions and actual values. 
+#RMSLE penalizes large gaps among small output-values more harshly than large gaps among large output-values
+#In simple words, more penalty is incurred when the predicted Value is less than the Actual Value. On the other hand, Less penalty is incurred when the predicted value is more than the actual value.
 

@@ -1,0 +1,83 @@
+Model Details:
+==============
+
+H2ORegressionModel: stackedensemble
+Model ID:  StackedEnsemble_BestOfFamily_2_AutoML_4_20220219_165509 
+Number of Base Models: 3
+
+Base Models (count by algorithm type):
+
+drf gbm glm 
+  1   1   1 
+
+Metalearner:
+
+Metalearner algorithm: glm
+Metalearner cross-validation fold assignment:
+  Fold assignment scheme: AUTO
+  Number of folds: 5
+  Fold column: NULL
+Metalearner hyperparameters: 
+
+
+H2ORegressionMetrics: stackedensemble
+** Reported on training data. **
+
+MSE:  102.6475
+RMSE:  10.13151
+MAE:  4.827851
+RMSLE:  NaN
+Mean Residual Deviance :  102.6475
+
+
+H2ORegressionMetrics: stackedensemble
+** Reported on validation data. **
+
+MSE:  639.2443
+RMSE:  25.28328
+MAE:  9.502009
+RMSLE:  NaN
+Mean Residual Deviance :  639.2443
+
+
+H2ORegressionMetrics: stackedensemble
+** Reported on cross-validation data. **
+** 5-fold cross-validation on training data (Metrics computed for combined holdout predictions) **
+
+MSE:  415.3985
+RMSE:  20.38133
+MAE:  8.778303
+RMSLE:  NaN
+Mean Residual Deviance :  415.3985
+________________________________________________________________________________________________________________
+
+#MSE(Mean Squared Error)
+#The MSE metric measures the average of the squares of the errors or deviations. MSE takes the distances from the points to the regression line (these distances are the “errors”) and squaring them to remove any negative signs. 
+#MSE also gives more weight to larger differences. The bigger the error, the more it is penalized. 
+#The smaller the MSE, the better the model’s performance.
+
+#RMSE(Root Mean Squared Error)
+#The RMSE metric evaluates how well a model can predict a continuous value. 
+#The smaller the RMSE, the better the model’s performance. 
+#RMSE penalizes large gaps more harshly than MAE
+
+#MAE(Mean Absolute Error)
+#The mean absolute error is an average of the absolute errors. 
+#The smaller the MAE the better the model’s performance. (Tip: MAE is robust to outliers. 
+#If you want a metric that is sensitive to outliers, try root mean squared error (RMSE).)
+
+#RMSLE(Root Mean Squared Logarithmic Error)
+#This metric measures the ratio between actual values and predicted values and takes the log of the predictions and actual values. 
+#RMSLE penalizes large gaps among small output-values more harshly than large gaps among large output-values
+#In simple words, more penalty is incurred when the predicted Value is less than the Actual Value. On the other hand, Less penalty is incurred when the predicted value is more than the actual value.
+
+GLM - Generalized Linear Models
+	The Generalized Linear Model is an extension of the linear model that allows for lots of different, non-linear models to be tested in the context of regression.
+DRF- Distributed Random Forest
+	When given a set of data, DRF generates a forest of classification or regression trees, rather than a single classification or regression tree. Each of these trees is a weak learner built on a subset of rows and columns.
+	More trees will reduce the variance. Both classification and regression take the average prediction over all of their trees to make a final prediction, whether predicting for a class or numeric value.
+GBM - Gradient Boosting Machine
+	Boosting is a method of converting weak learners into strong learners.
+	In boosting, each new tree is a fit on a modified version of the original data set.
+	Gradient boosting identify the shortcomings of weak learners (eg. decision by using gradients in the loss function (y=ax+b+e , e needs a special mention as it is the error term). 
+	The loss function is a measure indicating how good are model’s coefficients are at fitting the underlying data. 
