@@ -110,6 +110,7 @@ ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
   ggtitle("Amazon's actual vs prediction") +
   geom_line()
 
+
 ################################################################################################
 
 #MSE(Mean Squared Error)
