@@ -16,10 +16,9 @@ library(h2o)
 #Reading all the FAANG csv files and tidying it up to combine them
 
 amazon <- read_csv("datasets/AMZN.csv")
-#amazon <- mutate(amazon, Company="Amazon")
+amazon <- mutate(amazon, Company="Amazon")
 amazon$Date <- as.Date(amazon$Date,format ='%m/%d/%Y' )
 amazon <- amazon %>% select(-one_of("Adj Close"))
-amazon <- amazon %>% select(-one_of("Date"))
 apple <- read_csv("datasets/AAPL.csv")
 apple <- mutate(apple, Company="Apple")
 apple$Date <- as.Date(apple$Date,format ='%m/%d/%Y' )
@@ -54,6 +53,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 shift <- function(x, n) {
   c(x[-(seq(n))], rep(NA, n))
 }
+
 amazon$shifted <- shift(amazon$Close, 1)
 tail(amazon)
 
@@ -70,20 +70,45 @@ h2o.describe(amazon)
 y <- "shifted" #variable we want to forecast
 x <- setdiff(names(amazon), y)
 
-set.seed(1)
+set.seed(7)
 parts <- h2o.splitFrame(amazon, .80)
 train <- parts[[1]]
 test <- parts[[2]]
 
 #Train the Model
-automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 300, seed=1)
+automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 120, seed=7)
 
 #Obtained a list of models in order of performance. To learn more about them just call
 automodel@leader
 
-#Apply the Mode
-predictions <- h2o.predict(automodel@leader, test)
-predictions
+#Apply the Model
+predictions <- h2o.predict(automodel@leader, amazon)
+
+#Make it into a data frame I can use
+stock_predictions <- as.data.frame(predictions)
+
+amazon <- read_csv("datasets/AMZN.csv")
+amazon$Date <- as.Date(amazon$Date,format ='%m/%d/%Y' )
+amazon <- mutate(amazon, Company="Amazon")
+amazon <- select(amazon, Date, Close, Company)
+
+#Tidy data
+new_row <- c(tail(predictions, n=1))
+stock_predictions <- rbind(stock_predictions, new_row)
+stock_predictions <- mutate(stock_predictions, Date=amazon$Date)
+stock_predictions <- mutate(stock_predictions, Company="Amazon Prediction")
+stock_predictions <- rename(stock_predictions, Close=predict)
+stock_predictions <- select(stock_predictions, Date, Close, Company)
+stock_predictions <- arrange(stock_predictions, Date, Close, Company)
+
+#Write as a csv file
+write.csv(stock_predictions, "stock_predictions.csv")
+
+testPredict <- rbind(amazon, stock_predictions)
+
+ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
+  ggtitle("Amazon's actual vs prediction") +
+  geom_line()
 
 ################################################################################################
 
