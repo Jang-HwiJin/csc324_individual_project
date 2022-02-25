@@ -22,4 +22,4 @@
 2/22/2022 8am-12pm, 4 Hours: Learning Shiny again and Creating Shiny app structure
 2/23/2022 3pm-6pm, 9pm-10pm, 4 Hours: Learning h2o and trying to tune the ML
 2/24/2022 8am-12pm, 4 Hours: Updating shiny app and experimenting. Also learning about ML.
-2/25/2022 3pm-6pm, 9pm-10pm, 4 Hours: Trying to implement different methods of ML and add more shiny app.
+2/25/2022 3pm-6pm, 3 Hours: Trying to implement different methods of ML and add more shiny app.
