@@ -157,7 +157,7 @@ server <- function(input, output, session) {
       geom_line() + 
       xlim(range_date)
   })
-}
+} 
 
 shinyApp(ui = ui, server = server)
 
