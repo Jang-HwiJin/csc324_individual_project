@@ -76,7 +76,7 @@ train <- parts[[1]]
 test <- parts[[2]]
 
 #Train the Model
-automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 120, seed=7)
+automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 10, seed=7)
 
 #Obtained a list of models in order of performance. To learn more about them just call
 automodel@leader
@@ -132,4 +132,32 @@ ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
 #This metric measures the ratio between actual values and predicted values and takes the log of the predictions and actual values. 
 #RMSLE penalizes large gaps among small output-values more harshly than large gaps among large output-values
 #In simple words, more penalty is incurred when the predicted Value is less than the Actual Value. On the other hand, Less penalty is incurred when the predicted value is more than the actual value.
+
+################################################################################################
+range_date =  c(1997-05-15, 2022-02-11)
+
+ui <- fluidPage(
+  dateRangeInput("inDateRange", "Input date range"),
+  plotOutput("plot")
+)
+
+server <- function(input, output, session) {
+  observe({
+    updateDateRangeInput(session, "inDateRange",
+      label = paste("Date range label", input$n),
+      start = "1997-05-15",
+      end = "2022-02-11",
+      min = "1997-05-15",
+      max = "2022-02-11"
+    )
+  })
+  output$plot <- renderPlot({
+    ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
+      ggtitle("Amazon's actual vs prediction") +
+      geom_line() + 
+      xlim(range_date)
+  })
+}
+
+shinyApp(ui = ui, server = server)
 
