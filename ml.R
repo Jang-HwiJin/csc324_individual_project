@@ -134,7 +134,8 @@ ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
 #In simple words, more penalty is incurred when the predicted Value is less than the Actual Value. On the other hand, Less penalty is incurred when the predicted value is more than the actual value.
 
 ################################################################################################
-range_date =  c(1997-05-15, 2022-02-11)
+min_date = "1997-05-15"
+max_date = "2022-02-11"
 
 ui <- fluidPage(
   dateRangeInput("inDateRange", "Input date range"),
@@ -143,21 +144,22 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   observe({
-    updateDateRangeInput(session, "inDateRange",
-      label = paste("Date range label", input$n),
-      start = "1997-05-15",
-      end = "2022-02-11",
-      min = "1997-05-15",
-      max = "2022-02-11"
+    updateDateRangeInput(session = getDefaultReactiveDomain(), "inDateRange",
+      label = paste("Date range label"),
+      start = as.Date(input$inDateRange[1], format ='%m/%d/%Y'),
+      end = as.Date(input$inDateRange[2], format ='%m/%d/%Y'),
+      min = min_date,
+      max = max_date
     )
-  })
-  output$plot <- renderPlot({
-    ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
-      ggtitle("Amazon's actual vs prediction") +
-      geom_line() + 
-      xlim(range_date)
+  
+    range_date =  c(as.Date(input$inDateRange[1], format ='%m/%d/%Y'), as.Date(input$inDateRange[2], format ='%m/%d/%Y'))
+    output$plot <- renderPlot({
+      ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
+        ggtitle("Amazon's actual vs prediction") +
+        geom_line() + 
+        xlim(range_date)
+    })
   })
 } 
-
 shinyApp(ui = ui, server = server)
 
