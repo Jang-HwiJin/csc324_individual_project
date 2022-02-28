@@ -6,6 +6,7 @@ library(readr)
 library(zoom)
 library(scales)
 library(plotrix)
+library(markdown)
 
 #Installing the package
 #install.packages("h2o")
@@ -47,6 +48,7 @@ FAANG$Date <- as.Date(FAANG$Date,format ='%m/%d/%Y' )
 FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 ###############################################################################################
 
+
 ###############################################################################################
 
 #shifting n rows up of a given variable
@@ -70,13 +72,13 @@ h2o.describe(amazon)
 y <- "shifted" #variable we want to forecast
 x <- setdiff(names(amazon), y)
 
-set.seed(7)
+set.seed(8)
 parts <- h2o.splitFrame(amazon, .80)
 train <- parts[[1]]
 test <- parts[[2]]
 
 #Train the Model
-automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 10, seed=7)
+automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 5, seed=8)
 
 #Obtained a list of models in order of performance. To learn more about them just call
 automodel@leader
@@ -138,8 +140,22 @@ min_date = "1997-05-15"
 max_date = "2022-02-11"
 
 ui <- fluidPage(
-  dateRangeInput("inDateRange", "Input date range"),
-  plotOutput("plot")
+  navbarPage("Navbar!",
+             tabPanel("Plot",
+                      sidebarLayout(
+                        sidebarPanel(
+                          radioButtons("plotType", "Plot type",
+                                       c("Scatter"="p", "Line"="l")
+                          )
+                        ),
+                        mainPanel(
+                          plotOutput("ml_plot")
+                        )
+                      )
+             )
+  ),
+  dateRangeInput("inDateRange", "Input date range")
+  
 )
 
 server <- function(input, output, session) {
@@ -153,13 +169,22 @@ server <- function(input, output, session) {
     )
   
     range_date =  c(as.Date(input$inDateRange[1], format ='%m/%d/%Y'), as.Date(input$inDateRange[2], format ='%m/%d/%Y'))
-    output$plot <- renderPlot({
-      ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
-        ggtitle("Amazon's actual vs prediction") +
-        geom_line() + 
-        xlim(range_date)
+    output$ml_plot <- renderPlot({
+      if(input$plotType == "l") {
+        ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
+          ggtitle("Amazon's actual vs prediction") +
+          geom_line() + 
+          xlim(range_date)
+      } else {
+        ggplot(testPredict, aes(x=Date, y=Close, color=Company)) +
+          ggtitle("Amazon's actual vs prediction") +
+          geom_point() + 
+          xlim(range_date)
+      }
+      
     })
   })
+  
 } 
 shinyApp(ui = ui, server = server)
 
