@@ -141,7 +141,7 @@ max_date = "2022-02-11"
 
 ui <- fluidPage(
   navbarPage("Navbar!",
-             tabPanel("Plot",
+             tabPanel("Closing Day Predictions",
                       sidebarLayout(
                         sidebarPanel(
                           radioButtons("plotType", "Plot type",
@@ -149,13 +149,21 @@ ui <- fluidPage(
                           )
                         ),
                         mainPanel(
+                          dateRangeInput("inDateRange", "Input date range"),
                           plotOutput("ml_plot")
                         )
                       )
+                      ),
+             tabPanel("FAANG Summary",
+                      plotOutput("FAANG_plot")
+                      ),
+             tabPanel("Contact",
+                      #plotOutput("FAANG_plot")
+             ),
+             tabPanel("About Us",
+                      #plotOutput("FAANG_plot")
              )
-  ),
-  dateRangeInput("inDateRange", "Input date range")
-  
+  )
 )
 
 server <- function(input, output, session) {
@@ -183,7 +191,13 @@ server <- function(input, output, session) {
       }
       
     })
-  })
+    
+    output$FAANG_plot <- renderPlot({
+      ggplot(FAANG, aes(x=Date, y=Close, color=Company)) +
+        ggtitle("FAANG Stock Closing Prices") +
+        geom_line()
+    })
+  })  
   
 } 
 shinyApp(ui = ui, server = server)
