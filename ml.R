@@ -8,7 +8,7 @@ library(scales)
 library(plotrix)
 library(markdown)
 library(plotly)
-library(dash)
+library(shinydashboard)
 
 
 #Installing the package
@@ -53,7 +53,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 ###############################################################################################
 
 
-
+# 
 # #AMAZON
 # ##############################################################################################
 # 
@@ -84,7 +84,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 # test <- parts[[2]]
 # 
 # #Train the Model
-# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 60, seed=8)
+# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 1, seed=8)
 # 
 # #Obtained a list of models in order of performance. To learn more about them just call
 # automodel@leader
@@ -145,7 +145,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 # test <- parts[[2]]
 # 
 # #Train the Model
-# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 60, seed=8)
+# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 1, seed=8)
 # 
 # #Obtained a list of models in order of performance. To learn more about them just call
 # automodel@leader
@@ -206,7 +206,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 # test <- parts[[2]]
 # 
 # #Train the Model
-# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 60, seed=8)
+# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 1, seed=8)
 # 
 # #Obtained a list of models in order of performance. To learn more about them just call
 # automodel@leader
@@ -267,7 +267,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 # test <- parts[[2]]
 # 
 # #Train the Model
-# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 60, seed=8)
+# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 1, seed=8)
 # 
 # #Obtained a list of models in order of performance. To learn more about them just call
 # automodel@leader
@@ -328,7 +328,7 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 # test <- parts[[2]]
 # 
 # #Train the Model
-# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 60, seed=8)
+# automodel <- h2o.automl(x, y, train, test, max_runtime_secs = 1, seed=8)
 # 
 # #Obtained a list of models in order of performance. To learn more about them just call
 # automodel@leader
@@ -358,12 +358,18 @@ FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume)
 # testPredictNetflix <- rbind(netflix, stock_predictions)
 # 
 # ################################################################################################
-# 
+
 
 #SHINY APP
 ################################################################################################
 ui <- fluidPage(
+  theme = bslib::bs_theme(bootswatch = "lux"),
   navbarPage("StockTools",
+             tabPanel("Home",
+                      h1("StockTools", align = "center"),
+                      h3("Explore and Analyze stocks", align = "center"),
+                      p("Press on the tabs above to look at the prediction closing day prices, stock analysis, and etc.", align = "center")
+             ),
              tabPanel("Closing Day Predictions",
                             sidebarLayout(
                               sidebarPanel(
@@ -372,17 +378,19 @@ ui <- fluidPage(
                                 )
                               ),
                               mainPanel(
-                                plotlyOutput("ml_plot")
+                                plotlyOutput("ml_plot"),
+                                img(src="semiconductors.jpg", align = "center",height='250px',width='500px')
                               )
+                              
                             )
                       ),
              tabPanel("FAANG Summary",
                       plotOutput("FAANG_plot")
                       ),
              tabPanel("Contact",
-                      plotlyOutput("plotly_out")
+                      plotlyOutput("volumeStock")
                       )
-  )
+  ),
 )
 
 server <- function(input, output, session) {
@@ -392,6 +400,7 @@ server <- function(input, output, session) {
         ggtitle("FAANG Stock Closing Prices") +
         geom_line()
     })
+    
     
     output$ml_plot <- renderPlotly({
       whichStock <- input$stockType
@@ -435,7 +444,7 @@ server <- function(input, output, session) {
         max_date = as.Date(max_date,format ='%m/%d/%Y')
         }
       
-      fig <- plot_ly(stock, type = 'scatter', mode = 'lines')%>%
+      fig <- plot_ly(stock, type = 'scatter', mode = 'lines', colors = c("red", "blue"))%>%
         add_trace(x = ~Date, y = ~Close, color=~Company)%>%
         layout(showlegend = F, 
                title= 'Stock Prediction vs Actual Stock Closing Price',
@@ -444,6 +453,7 @@ server <- function(input, output, session) {
                )
       fig <- fig %>%
         layout(
+          width = 1200, height = 800,
           xaxis = list(zerolinecolor = '#ffff',
                        zerolinewidth = 2,
                        gridcolor = 'ffff'),
