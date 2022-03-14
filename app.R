@@ -76,19 +76,7 @@ FAANG$Date <- as.Date(FAANG$Date,format ='%m/%d/%Y' )
 #Rearranging the dataframe so that Company comes first, then date, open, high, low, close, volume, and volumeDiff (Close - Open)
 FAANG <- select(FAANG, Company, Date, Open, High , Low, Close, Volume, volumeDiff)
 
-#Calculating the differences of price of individual and FAANG
-appleLength = nrow(apple)
-amazonLength = nrow(amazon)
-facebookLength = nrow(facebook)
-googleLength = nrow(google)
-netflixLength = nrow(netflix)
 
-
-amazon_diff = ((amazon[4][amazonLength] - amazon[4][1])/amazon[4][1]) * 100
-apple_diff = ((apple[4][appleLength] - apple[4][1]) / apple[4][1]) * 100
-facebook_diff = ((facebook[4][facebookLength] - facebook[4][1]) / facebook[4][1]) * 100
-google_diff = ((google[4][googleLength] - google[4][1]) / google[4][1]) * 100
-netflix_diff = ((netflix[4][netflixLength] - netflix[4][1]) / netflix[4][1]) * 100
 ###############################################################################################
 
 
@@ -104,13 +92,13 @@ amazon$shifted <- shift(amazon$Close, 1)
 
 #Remove NA observations
 amazon <- na.omit(amazon)
-write.csv(amazon, "amazon.csv")
+write.csv(amazon, "datasets/amazon.csv")
 
 #Initializing the Virtual Machine using all the threads (-1) and 16gb of memory
 h2o.init(nthreads = -1, max_mem_size = "16g")
 
 #Import the amazon file into the h2o framework so it can work on it
-amazon <- h2o.importFile("amazon.csv")
+amazon <- h2o.importFile("datasets/amazon.csv")
 h2o.describe(amazon)
 
 y <- "shifted" #variable we want to forecast
@@ -142,7 +130,7 @@ stock_predictions <- select(stock_predictions, Date, Close, Company)
 stock_predictions <- arrange(stock_predictions, Date, Close, Company)
 
 #Write as a csv file
-write.csv(stock_predictions, "stock_predictionsAmazon.csv")
+write.csv(stock_predictions, "datasets/stock_predictionsAmazon.csv")
 
 #Combine data frames to test the predictions
 testPredictAmazon <- rbind(amazon, stock_predictions)
@@ -162,12 +150,12 @@ tail(apple)
 
 #remove NA observations
 apple <- na.omit(apple)
-write.csv(apple, "apple.csv")
+write.csv(apple, "datasets/apple.csv")
 
 #Initializing the Virtual Machine using all the threads (-1) and 16gb of memory
 h2o.init(nthreads = -1, max_mem_size = "16g")
 
-apple <- h2o.importFile("apple.csv")
+apple <- h2o.importFile("datasets/apple.csv")
 h2o.describe(apple)
 
 y <- "shifted" #variable we want to forecast
@@ -199,7 +187,7 @@ stock_predictions <- select(stock_predictions, Date, Close, Company)
 stock_predictions <- arrange(stock_predictions, Date, Close, Company)
 
 #Write as a csv file
-write.csv(stock_predictions, "stock_predictionsApple.csv")
+write.csv(stock_predictions, "datasets/stock_predictionsApple.csv")
 
 testPredictApple <- rbind(apple, stock_predictions)
 
@@ -217,12 +205,12 @@ facebook$shifted <- shift(facebook$Close, 1)
 
 #remove NA observations
 facebook <- na.omit(facebook)
-write.csv(facebook, "facebook.csv")
+write.csv(facebook, "datasets/facebook.csv")
 
 #Initializing the Virtual Machine using all the threads (-1) and 16gb of memory
 h2o.init(nthreads = -1, max_mem_size = "16g")
 
-facebook <- h2o.importFile("facebook.csv")
+facebook <- h2o.importFile("datasets/facebook.csv")
 h2o.describe(facebook)
 
 y <- "shifted" #variable we want to forecast
@@ -254,7 +242,7 @@ stock_predictions <- select(stock_predictions, Date, Close, Company)
 stock_predictions <- arrange(stock_predictions, Date, Close, Company)
 
 #Write as a csv file
-write.csv(stock_predictions, "stock_predictionsFacebook.csv")
+write.csv(stock_predictions, "datasets/stock_predictionsFacebook.csv")
 
 testPredictFacebook <- rbind(facebook, stock_predictions)
 
@@ -272,12 +260,12 @@ google$shifted <- shift(google$Close, 1)
 
 #remove NA observations
 google <- na.omit(google)
-write.csv(google, "google.csv")
+write.csv(google, "datasets/google.csv")
 
 #Initializing the Virtual Machine using all the threads (-1) and 16gb of memory
 h2o.init(nthreads = -1, max_mem_size = "16g")
 
-google <- h2o.importFile("google.csv")
+google <- h2o.importFile("datasets/google.csv")
 h2o.describe(google)
 
 y <- "shifted" #variable we want to forecast
@@ -309,7 +297,7 @@ stock_predictions <- select(stock_predictions, Date, Close, Company)
 stock_predictions <- arrange(stock_predictions, Date, Close, Company)
 
 #Write as a csv file
-write.csv(stock_predictions, "stock_predictionsGoogle.csv")
+write.csv(stock_predictions, "datasets/stock_predictionsGoogle.csv")
 
 testPredictGoogle <- rbind(google, stock_predictions)
 
@@ -327,12 +315,12 @@ netflix$shifted <- shift(netflix$Close, 1)
 
 #remove NA observations
 netflix <- na.omit(netflix)
-write.csv(netflix, "netflix.csv")
+write.csv(netflix, "datasets/netflix.csv")
 
 #Initializing the Virtual Machine using all the threads (-1) and 16gb of memory
 h2o.init(nthreads = -1, max_mem_size = "16g")
 
-netflix <- h2o.importFile("netflix.csv")
+netflix <- h2o.importFile("datasets/netflix.csv")
 h2o.describe(netflix)
 
 y <- "shifted" #variable we want to forecast
@@ -364,13 +352,26 @@ stock_predictions <- select(stock_predictions, Date, Close, Company)
 stock_predictions <- arrange(stock_predictions, Date, Close, Company)
 
 #Write as a csv file
-write.csv(stock_predictions, "stock_predictionsNetflix.csv")
+write.csv(stock_predictions, "datasets/stock_predictionsNetflix.csv")
 
 testPredictNetflix <- rbind(netflix, stock_predictions)
 
 ################################################################################################
 
+#Calculating the differences of price of individual and FAANG
+################################################################################################
+appleLength = nrow(apple)
+amazonLength = nrow(amazon)
+facebookLength = nrow(facebook)
+googleLength = nrow(google)
+netflixLength = nrow(netflix)
 
+
+amazon_diff = ((amazon[4][amazonLength] - amazon[4][1])/amazon[4][1]) * 100
+apple_diff = ((apple[4][appleLength] - apple[4][1]) / apple[4][1]) * 100
+facebook_diff = ((facebook[4][facebookLength] - facebook[4][1]) / facebook[4][1]) * 100
+google_diff = ((google[4][googleLength] - google[4][1]) / google[4][1]) * 100
+netflix_diff = ((netflix[4][netflixLength] - netflix[4][1]) / netflix[4][1]) * 100
 
 
 shinyApp(ui = ui, server = server)
