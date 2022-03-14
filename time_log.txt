@@ -32,4 +32,4 @@
 3/08/2022 8am-11pm, 3 Hours: Working on SHiny App Naviagtion and Side Bar
 3/09/2022 3pm-6pm, 9pm-10pm, 4 Hours: Adding new graphs and charts to Shiny APp
 3/10/2022 8am-12pm, 4 Hours: Shiny App update and new data visualizations using my dataset
-3/11/2022 1pm-4pm, 3 Hours: Shiny app polishing and adding contact and about us page
+3/11/2022 1pm-4pm, 3 Hours: Shiny app polishing and adding finsihing touches and document and video
