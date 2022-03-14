@@ -119,6 +119,7 @@ print(fit.lda)
 print(fit.lda$results)
 
 
+
 # estimate skill of LDA on the validation dataset
 predictions <- predict(fit.lda, validation)
 confusionMatrix(predictions, validation$Species)
